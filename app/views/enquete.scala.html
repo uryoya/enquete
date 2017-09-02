@@ -1,0 +1,29 @@
+@import helper._
+@import databaseModels.EnqueteDbData
+@import databaseModels.AnswerDbData
+@import formModels._
+@(enquete: EnqueteDbData, answers: List[AnswerDbData])(answerForm: Form[answerData])(implicit messages: Messages)
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<title>enquete</title>
+</head>
+<body>
+	<h1>@enquete.title</h1>
+	<p>author: @enquete.author</p>
+	<p>@enquete.description</p>
+	<h2>Answers</h2>
+	<ul>
+	@for(answer <- answers) {
+		<li><a href="@routes.EnqueteController.answer(enquete.id, answer.id)">@answer.author</a></li>
+	}
+	</ul>
+	<h2>Answer</h2>
+	@form(action = routes.EnqueteController.addAnswer(enquete.id)) {
+		@inputText(answerForm("author"))
+		@inputText(answerForm("answer"))
+		<input type="submit" value="ANSWER">
+	}
+</body>
+</html>

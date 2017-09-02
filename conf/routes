@@ -1,0 +1,11 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Enquete
+GET     /                                       controllers.EnqueteController.index
+POST    /enquete                                controllers.EnqueteController.addEnquete
+GET     /enquete/:id                            controllers.EnqueteController.enquete(id: Int)
+POST    /enquete/:enquete_id/answer             controllers.EnqueteController.addAnswer(enquete_id: Int)
+GET     /enquete/:enquete_id/answer/:id         controllers.EnqueteController.answer(enquete_id: Int, id: Int)
+POST    /enquete/:enquete_id/answer/:answer_id  controllers.EnqueteController.addComment(enquete_id: Int, answer_id: Int)

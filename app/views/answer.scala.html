@@ -1,0 +1,31 @@
+@import helper._
+@import formModels._
+@import databaseModels.EnqueteDbData
+@import databaseModels.AnswerDbData
+@import databaseModels.CommentDbData
+@(enquete: EnqueteDbData, answer: AnswerDbData, comments: List[CommentDbData])(commentForm: Form[commentData])(implicit messages: Messages)
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<title>enquete</title>
+</head>
+<body>
+	<h1>@enquete.title</h1>
+	<h2>answer</h2>
+	<p>author: @answer.author</p>
+	<p>@answer.answer</p>
+	<h2>comments</h2>
+	<ul>
+	@for(comment <- comments) {
+		<li>@comment.author : @comment.comment</li>
+	}
+	</ul>
+	<h2>comment</h2>
+	@form(action = routes.EnqueteController.addComment(1, 1)) {
+		@inputText(commentForm("author"))
+		@inputText(commentForm("comment"))
+		<input type="submit" value="COMMENT">
+	}
+</body>
+</html>

@@ -1,0 +1,28 @@
+@import helper._
+@import formModels._
+@import databaseModels.EnqueteDbData
+@(enquetes: List[EnqueteDbData])(enqueteForm: Form[enqueteData])(implicit messages: Messages)
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<title>enquete</title>
+</head>
+<body>
+	<h1>enquete</h1>
+	<h2>new enquete</h2>
+	<ul>
+	@for(enquete <- enquetes) {
+		<li><a href="@routes.EnqueteController.enquete(enquete.id)">@enquete.title</a></li>
+	}
+	</ul>
+	<h3>create enqeute</h3>
+	@form(action = routes.EnqueteController.addEnquete()) {
+		@inputText(enqueteForm("author"))
+		@inputText(enqueteForm("title"))
+		@inputText(enqueteForm("description"))
+		<input type="submit" value="SUBMIT">
+	}
+	<h2>history</h2>
+</body>
+</html>
