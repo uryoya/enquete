@@ -4,6 +4,8 @@
 
 # Enquete
 GET     /                                       controllers.EnqueteController.index
+GET     /signin                                 controllers.AuthorizeController.signin
+GET     /signout                                controllers.AuthorizeController.signout
 POST    /enquete                                controllers.EnqueteController.addEnquete
 GET     /enquete/:id                            controllers.EnqueteController.enquete(id: Int)
 POST    /enquete/:enquete_id/answer             controllers.EnqueteController.addAnswer(enquete_id: Int)
