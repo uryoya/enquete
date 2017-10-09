@@ -8,7 +8,7 @@ import play.api.libs.ws.WSClient
 import play.api.libs.json.Json
 import dispatch._, Defaults._
 
-case class AccessToken(accesssToken: String, Scope: String, tokenType: String)
+case class AccessToken(access_token: String, scope: String, token_type: String)
 object AccessToken {
     implicit def jsonWrites = Json.writes[AccessToken]
     implicit def jsonReads = Json.reads[AccessToken]
@@ -32,8 +32,9 @@ class AuthorizeController @Inject()(db: Database)(ws: WSClient) extends Controll
             .addParameter("code", sessionCode)
         val accessToken = Http.default(conn OK as.String)
         val result = accessToken()
-        //val accessTokenJson = Json.fromJson[AccessToken]
-        Ok(views.html.authorize_atoken(result))
+        val accessTokenJson = Json.fromJson[AccessToken](Json.parse(result)).get
+        Ok(views.html.authorize_atoken(accessTokenJson.access_token))
+        // これで一応JSONをパースできるが、レスポンスがエラーの場合死ぬ
     }
 
     def signout = Action {
