@@ -5,6 +5,7 @@
 # Enquete
 GET     /                                       controllers.EnqueteController.index
 GET     /signin                                 controllers.AuthorizeController.signin
+GET     /callback                               controllers.AuthorizeController.callback
 GET     /signout                                controllers.AuthorizeController.signout
 POST    /enquete                                controllers.EnqueteController.addEnquete
 GET     /enquete/:id                            controllers.EnqueteController.enquete(id: Int)
