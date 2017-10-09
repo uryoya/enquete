@@ -2,25 +2,11 @@ package controllers
 
 import javax.inject._
 
-import akka.stream.javadsl.Source
-import akka.util.ByteString
-import play.api.Play._
 import play.api.mvc._
-import play.api.data.Form
-import play.api.data.Forms._
-import play.api.i18n.Messages.Implicits._
 import play.api.db._
-import play.api._
-import formModels._
-import databaseModels._
-import play.api.http.Writeable
-import play.api.libs.json.JsResult
 import play.api.libs.ws.WSClient
-import play.api.mvc.MultipartFormData.DataPart
 import play.api.libs.json.Json
-
-import scala.concurrent.Future
-import scala.concurrent.ExecutionContext.Implicits.global
+import dispatch._, Defaults._
 
 case class AccessToken(accesssToken: String, Scope: String, tokenType: String)
 object AccessToken {
@@ -39,26 +25,15 @@ class AuthorizeController @Inject()(db: Database)(ws: WSClient) extends Controll
 
     def callback = Action { implicit request =>
         val sessionCode = request.getQueryString("code").getOrElse("")
-
-        // val context = play.api.libs.concurrent.Execution.Implicits.defaultContext
-
-
-        val result: Future[JsResult[AccessToken]] = ws.url("https://github.com/login/oauth/access_token")
-            .withHeaders("Accept" -> "application/json")
-            .post(Map(
-                "client_id" -> Seq(clientId),
-                "client_secret" -> Seq(clientSecret),
-                "code" -> Seq(sessionCode)
-            )).map {
-            response => (response.json).validate[AccessToken]
-        }
-
-
-        result.foreach{
-            case a: AccessToken => Ok(views.html.authorize_atoken(a.accesssToken))
-            case _ => Ok(views.html.authorize())
-        }
-        Ok(views.html.authorize())
+        val conn = url("https://github.com/login/oauth/access_token").POST
+            .addHeader("Accept", "application/json")
+            .addParameter("client_id", clientId)
+            .addParameter("client_secret", clientSecret)
+            .addParameter("code", sessionCode)
+        val accessToken = Http.default(conn OK as.String)
+        val result = accessToken()
+        //val accessTokenJson = Json.fromJson[AccessToken]
+        Ok(views.html.authorize_atoken(result))
     }
 
     def signout = Action {
