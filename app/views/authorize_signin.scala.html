@@ -1,4 +1,5 @@
-@(clientId: String)
+@(authorizeUrl: String)
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -7,6 +8,6 @@
 </head>
 <body>
 	<h1>Authorize</h1>
-	<p>Signin/up with GitHub account. <a href="https://github.com/login/oauth/authorize?scope=user:email&client_id=@clientId">Click here!</a></p>
+	<p>Signin/up with GitHub account. <a href="@authorizeUrl">Click here!</a></p>
 </body>
 </html>
