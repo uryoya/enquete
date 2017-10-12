@@ -6,17 +6,17 @@ import play.api.db._
 import anorm._
 import anorm.SqlParser._
 
-case class UserDbData(id: Int, name: String, icon: Byte, accessToken: String)
+case class UserDbData(id: Int, name: String, icon: Array[Byte], accessToken: String)
 
 @Singleton
 class UserModel(db: Database) {
     // user parser
-    val userDataParser = int("id") ~ str("name") ~ byte("icon") ~ str("access_token")
+    val userDataParser = int("id") ~ str("name") ~ byteArray("icon") ~ str("access_token")
     val userDataMapper = userDataParser.map {
         case id~name~icon~access_token => UserDbData(id, name, icon, access_token)
     }
 
-    def addUser(id: Int, name: String, icon: Byte, accessToken: String): Option[Long] = {
+    def addUser(id: Int, name: String, icon: Array[Byte], accessToken: String): Option[Long] = {
         db.withConnection { implicit connect =>
             SQL("INSERT INTO `user` (`id`, `name`, `icon`, `access_token`) VALUES ({id}, {name}, {icon}, {access_token});")
                 .on("id" -> id, "name" -> name, "icon" -> icon, "access_token" -> accessToken)
@@ -43,7 +43,7 @@ class UserModel(db: Database) {
         }
     }
 
-    def updateIcon(id: Int, icon: Byte): Unit = {
+    def updateIcon(id: Int, icon: Array[Byte]): Unit = {
         db.withConnection{ implicit connect =>
             SQL("UPDATE `user` SET `icon` = {icon} WHERE `id` = {id};")
                 .on("icon" -> icon, "id" -> id)

@@ -8,13 +8,14 @@ import play.api.libs.ws.WSClient
 import play.api.libs.json._
 import dispatch._
 import Defaults._
-import com.fasterxml.jackson.annotation.JsonValue
+import databaseModels._
 
 
 @Singleton
 class AuthorizeController @Inject()(db: Database)(ws: WSClient) extends Controller {
     val clientId = "677bd149cb0df73ec46c"
     val clientSecret = "f940fe8e9f840f036a108859fe8691612f878d64"
+    val userModel: UserModel = new UserModel(db)
 
     def signin = Action { implicit request =>
         // GitHub OAuth認証の流れ
@@ -46,11 +47,26 @@ class AuthorizeController @Inject()(db: Database)(ws: WSClient) extends Controll
             val result = Http.default(conn OK as.String)
             Json.parse(result())
         }
-        println(userJson)
-        val githubId = (userJson \ "id").asOpt[Int]
-        val githubName = (userJson \ "name").asOpt[String]
-        val githubIconUrl = (userJson \ "avatar_url").asOpt[String]
-        println("id: " + githubId + "\nname: " + githubName + "\nicon" + githubIconUrl)
+
+        // TODO: ユーザが存在しなかった場合の処理を書いてないやばい
+        val githubId = (userJson \ "id").asOpt[Int] match {
+            case Some(id) => id
+            case None => 0
+        }
+        val githubName = (userJson \ "name").asOpt[String] match {
+            case Some(name) => name
+            case None => ""
+        }
+        val githubIconUrl = (userJson \ "avatar_url").asOpt[String] match {
+            case Some(avatarUrl) => avatarUrl
+            case None => ""
+        }
+        val githubIcon = {
+            val conn = url(githubIconUrl)
+            val result = Http.default(conn OK as.Bytes)
+            result()
+        }
+        userModel.addUser(githubId, githubName, githubIcon, accessToken)
         // これで一応JSONをパースできるが、レスポンスがエラーの場合死ぬ
         Redirect(routes.EnqueteController.index())
     }
