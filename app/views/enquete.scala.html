@@ -11,12 +11,12 @@
 </head>
 <body>
 	<h1>@enquete.title</h1>
-	<p>author: @enquete.author</p>
+	<p>author: @enquete.userId</p>
 	<p>@enquete.description</p>
 	<h2>Answers</h2>
 	<ul>
 	@for(answer <- answers) {
-		<li><a href="@routes.EnqueteController.answer(enquete.id, answer.id)">@answer.author</a></li>
+		<li><a href="@routes.EnqueteController.answer(enquete.id, answer.id)">@answer.answer</a></li>
 	}
 	</ul>
 	<h2>Answer</h2>

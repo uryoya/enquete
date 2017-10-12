@@ -6,32 +6,32 @@ import play.api.db._
 import anorm._
 import anorm.SqlParser._
 
-case class EnqueteDbData(id: Int, author: String, title: String, description: String)
-case class AnswerDbData(id: Int, author: String, answer: String, enqueteId: Int)
-case class CommentDbData(id: Int, author: String, comment: String, answerId: Int)
+case class EnqueteDbData(id: Int, userId: Int, title: String, description: String)
+case class AnswerDbData(id: Int, userId: Int, answer: String, enqueteId: Int)
+case class CommentDbData(id: Int, userId: Int, comment: String, answerId: Int)
 
 @Singleton
 class EnquetesModel(db: Database) {
   // enquete parser
-  val enqueteDataParser = int("id") ~ str("author") ~ str("title") ~ str("description")
+  val enqueteDataParser = int("id") ~ int("user_id") ~ str("title") ~ str("description")
   val enqueteDataMapper = enqueteDataParser.map {
-    case id~author~title~description => EnqueteDbData(id, author, title, description)
+    case id~user_id~title~description => EnqueteDbData(id, user_id, title, description)
   }
   // answer parser
-  val answerDataParser = int("id") ~ str("author") ~ str("answer") ~ int("enquete_id")
+  val answerDataParser = int("id") ~ int("user_id") ~ str("answer") ~ int("enquete_id")
   val answerDataMapper = answerDataParser.map {
-    case id~author~answer~enquete_id => AnswerDbData(id, author, answer, enquete_id)
+    case id~user_id~answer~enquete_id => AnswerDbData(id, user_id, answer, enquete_id)
   }
   // comment parser
-  val commentDataParser = int("id") ~ str("author") ~ str("comment") ~ int("answer_id")
+  val commentDataParser = int("id") ~ int("user_id") ~ str("comment") ~ int("answer_id")
   val commentDataMapper = commentDataParser.map {
-    case id~author~comment~answer_id => CommentDbData(id, author, comment, answer_id)
+    case id~user_id~comment~answer_id => CommentDbData(id, user_id, comment, answer_id)
   }
 
-  def addEnquete(author: String, title: String, description: String): Option[Long] = {
+  def addEnquete(user_id: Int, title: String, description: String): Option[Long] = {
     db.withConnection{ implicit connect =>
-      SQL("INSERT INTO `enquete` (`author`, `title`, `description`) VALUES ({author}, {title}, {description});")
-        .on("author" -> author, "title" -> title, "description" -> description)
+      SQL("INSERT INTO `enquete` (`user_id`, `title`, `description`) VALUES ({user_id}, {title}, {description});")
+        .on("user_id" -> user_id, "title" -> title, "description" -> description)
         .executeInsert()
     }
   }
@@ -53,10 +53,10 @@ class EnquetesModel(db: Database) {
     }
   }
 
-  def addAnswer(enqueteId: Int, author: String, answer: String): Option[Long] = {
+  def addAnswer(enqueteId: Int, user_id: Int, answer: String): Option[Long] = {
     db.withConnection{ implicit connect =>
-      SQL("INSERT INTO `answer` (`enquete_id`, `author`, `answer`) VALUES ({id}, {author}, {answer});")
-        .on("id" -> enqueteId, "author" -> author, "answer" -> answer).executeInsert()
+      SQL("INSERT INTO `answer` (`enquete_id`, `user_id`, `answer`) VALUES ({id}, {user_id}, {answer});")
+        .on("id" -> enqueteId, "user_id" -> user_id, "answer" -> answer).executeInsert()
     }
   }
 
@@ -78,10 +78,10 @@ class EnquetesModel(db: Database) {
     }
   }
 
-  def addComment(answerId: Int, author: String, comment: String): Option[Long] = {
+  def addComment(answerId: Int, user_id: Int, comment: String): Option[Long] = {
     db.withConnection{ implicit connect =>
-      SQL("INSERT INTO `comment` (`answer_id`, `author`, `comment`) VALUES ({id}, {author}, {comment});")
-        .on("id" -> answerId, "author" -> author, "comment" -> comment).executeInsert()
+      SQL("INSERT INTO `comment` (`answer_id`, `user_id`, `comment`) VALUES ({id}, {user_id}, {comment});")
+        .on("id" -> answerId, "user_id" -> user_id, "comment" -> comment).executeInsert()
     }
   }
 

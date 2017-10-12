@@ -66,9 +66,11 @@ class AuthorizeController @Inject()(db: Database)(ws: WSClient) extends Controll
             val result = Http.default(conn OK as.Bytes)
             result()
         }
-        userModel.addUser(githubId, githubName, githubIcon, accessToken)
+        if (userModel.getUser(githubId) == null) {
+            userModel.addUser(githubId, githubName, githubIcon, accessToken)
+        }
         // これで一応JSONをパースできるが、レスポンスがエラーの場合死ぬ
-        Redirect(routes.EnqueteController.index())
+        Redirect(routes.EnqueteController.index()).withSession("login" -> githubId.toString)
     }
 
     def signout = Action {
