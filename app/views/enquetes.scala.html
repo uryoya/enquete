@@ -18,7 +18,6 @@
 	</ul>
 	<h3>create enqeute</h3>
 	@form(action = routes.EnqueteController.addEnquete()) {
-		@inputText(enqueteForm("author"))
 		@inputText(enqueteForm("title"))
 		@inputText(enqueteForm("description"))
 		<input type="submit" value="SUBMIT">
