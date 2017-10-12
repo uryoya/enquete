@@ -21,7 +21,6 @@
 	</ul>
 	<h2>Answer</h2>
 	@form(action = routes.EnqueteController.addAnswer(enquete.id)) {
-		@inputText(answerForm("author"))
 		@inputText(answerForm("answer"))
 		<input type="submit" value="ANSWER">
 	}

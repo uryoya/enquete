@@ -23,7 +23,6 @@
 	</ul>
 	<h2>comment</h2>
 	@form(action = routes.EnqueteController.addComment(enquete.id, answer.id)) {
-		@inputText(commentForm("author"))
 		@inputText(commentForm("comment"))
 		<input type="submit" value="COMMENT">
 	}
