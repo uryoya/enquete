@@ -6,28 +6,28 @@ import play.api.db._
 import anorm._
 import anorm.SqlParser._
 
-case class EnqueteDbData(id: Int, userId: Int, title: String, description: String)
+case class EnqueteDbData(id: Int, author: String, title: String, description: String)
 
-case class AnswerDbData(id: Int, userId: Int, answer: String, enqueteId: Int)
+case class AnswerDbData(id: Int, author: String, answer: String)
 
-case class CommentDbData(id: Int, userId: Int, comment: String, answerId: Int)
+case class CommentDbData(id: Int, author: String, comment: String)
 
 @Singleton
 class EnquetesModel(db: Database) {
     // enquete parser
-    val enqueteDataParser = int("id") ~ int("user_id") ~ str("title") ~ str("description")
+    val enqueteDataParser = int("id") ~ str("name") ~ str("title") ~ str("description")
     val enqueteDataMapper = enqueteDataParser.map {
-        case id ~ user_id ~ title ~ description => EnqueteDbData(id, user_id, title, description)
+        case id ~ author ~ title ~ description => EnqueteDbData(id, author, title, description)
     }
     // answer parser
-    val answerDataParser = int("id") ~ int("user_id") ~ str("answer") ~ int("enquete_id")
+    val answerDataParser = int("id") ~ str("name") ~ str("answer")
     val answerDataMapper = answerDataParser.map {
-        case id ~ user_id ~ answer ~ enquete_id => AnswerDbData(id, user_id, answer, enquete_id)
+        case id ~ author ~ answer => AnswerDbData(id, author, answer)
     }
     // comment parser
-    val commentDataParser = int("id") ~ int("user_id") ~ str("comment") ~ int("answer_id")
+    val commentDataParser = int("id") ~ str("name") ~ str("comment")
     val commentDataMapper = commentDataParser.map {
-        case id ~ user_id ~ comment ~ answer_id => CommentDbData(id, user_id, comment, answer_id)
+        case id ~ author ~ comment => CommentDbData(id, author, comment)
     }
 
     def addEnquete(user_id: Int, title: String, description: String): Option[Long] = {
@@ -40,8 +40,10 @@ class EnquetesModel(db: Database) {
 
     def getEnqutete(id: Int): EnqueteDbData = {
         db.withConnection { implicit connect =>
-            val data = SQL("SELECT * FROM `enquete` WHERE `id` = {id};")
-                .on("id" -> id).as(enqueteDataMapper.*)
+            val data = SQL("""
+                SELECT e.id, u.name, e.title, e.description
+                FROM enquete e LEFT JOIN user u ON e.user_id = u.id WHERE e.id = {id};
+            """).on("id" -> id).as(enqueteDataMapper.*)
             if (data.length < 1)
                 null
             else
@@ -51,7 +53,10 @@ class EnquetesModel(db: Database) {
 
     def getAllEnquete: List[EnqueteDbData] = {
         db.withConnection { implicit connect =>
-            SQL("SELECT * FROM `enquete`").as(enqueteDataMapper.*)
+            SQL("""
+                SELECT e.id, u.name, e.title, e.description
+                FROM enquete e LEFT JOIN user u ON e.user_id = u.id;
+             """).as(enqueteDataMapper.*)
         }
     }
 
@@ -64,8 +69,11 @@ class EnquetesModel(db: Database) {
 
     def getAnswer(enqueteId: Int, id: Int): AnswerDbData = {
         db.withConnection { implicit connect =>
-            val data = SQL("SELECT * FROM `answer` WHERE `enquete_id` = {enquete_id} and `id` = {id};")
-                .on("enquete_id" -> enqueteId, "id" -> id).as(answerDataMapper.*)
+            val data = SQL("""
+                SELECT a.id, u.name, a.answer
+                FROM answer a LEFT JOIN user u ON a.user_id = u.id
+                WHERE a.enquete_id = {enquete_id} AND a.id = {id};
+            """).on("enquete_id" -> enqueteId, "id" -> id).as(answerDataMapper.*)
             if (data.length < 1)
                 null
             else
@@ -75,8 +83,11 @@ class EnquetesModel(db: Database) {
 
     def getAllAnswer(enqueteId: Int): List[AnswerDbData] = {
         db.withConnection { implicit connect =>
-            SQL("SELECT * FROM `answer` WHERE `enquete_id` = {enquete_id};")
-                .on("enquete_id" -> enqueteId).as(answerDataMapper.*)
+            SQL("""
+                SELECT a.id, u.name, a.answer
+                FROM answer a LEFT JOIN user u ON a.user_id = u.id
+                WHERE a.enquete_id = {enquete_id};
+            """).on("enquete_id" -> enqueteId).as(answerDataMapper.*)
         }
     }
 
@@ -89,8 +100,11 @@ class EnquetesModel(db: Database) {
 
     def getComment(answerId: Int, id: Int): CommentDbData = {
         db.withConnection { implicit connect =>
-            val data = SQL("SELECT * FROM `comment` WHERE `answer_id` = {answer_id} and `id` = {id};")
-                .on("answer_id" -> answerId, "id" -> id).as(commentDataMapper.*)
+            val data = SQL("""
+                SELECT c.id, u.name, c.comment
+                FROM comment c LEFT JOIN user u on c.user_id = u.id
+                WHERE c.answer_id = {answer_id} AND c.id` = {id};
+            """).on("answer_id" -> answerId, "id" -> id).as(commentDataMapper.*)
             if (data.length < 1)
                 null
             else
@@ -100,8 +114,11 @@ class EnquetesModel(db: Database) {
 
     def getAllComment(answerId: Int): List[CommentDbData] = {
         db.withConnection { implicit connect =>
-            SQL("SELECT * FROM `comment` WHERE `answer_id` = {answer_id};")
-                .on("answer_id" -> answerId).as(commentDataMapper.*)
+            SQL("""
+                SELECT c.id, u.name, c.comment
+                FROM comment c LEFT JOIN user u on c.user_id = u.id
+                WHERE c.answer_id = {answer_id};
+            """).on("answer_id" -> answerId).as(commentDataMapper.*)
         }
     }
 }

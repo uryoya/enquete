@@ -13,12 +13,12 @@
 <body>
 	<h1>@enquete.title</h1>
 	<h2>answer</h2>
-	<p>author: @answer.userId</p>
+	<p>author: @answer.author</p>
 	<p>@answer.answer</p>
 	<h2>comments</h2>
 	<ul>
 	@for(comment <- comments) {
-		<li>@comment.userId : @comment.comment</li>
+		<li>@comment.author : @comment.comment</li>
 	}
 	</ul>
 	<h2>comment</h2>
