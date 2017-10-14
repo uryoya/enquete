@@ -3,7 +3,6 @@
 @import databaseModels.EnqueteDbData
 @(enquetes: List[EnqueteDbData])(enqueteForm: Form[enqueteData])(implicit messages: Messages)
 @main("Enquete") {
-    <h1>Enquete</h1>
     <a href="@routes.EnqueteController.index()">home</a> >
     <h2>new enquete</h2>
     <ul>
