@@ -57,7 +57,7 @@ class EnqueteController @Inject()(db: Database) extends Controller {
         request.session.get("login").map { userId =>
             val enquete = enqueteModel.getEnqutete(id)
             val answers = enqueteModel.getAllAnswer(id)
-            Ok(views.html.enquete(id)(enquete, answers)(answerForm))
+            Ok(views.html.enquete(enquete, answers)(answerForm))
         }.getOrElse {
             Redirect(routes.AuthorizeController.signin())
         }
@@ -81,7 +81,7 @@ class EnqueteController @Inject()(db: Database) extends Controller {
             val enquete = enqueteModel.getEnqutete(enqueteId)
             val answer = enqueteModel.getAnswer(enqueteId, id)
             val comments = enqueteModel.getAllComment(id)
-            Ok(views.html.answer(enqueteId, id)(enquete, answer, comments)(commentForm))
+            Ok(views.html.answer(enquete, answer, comments)(commentForm))
         }.getOrElse {
             Redirect(routes.AuthorizeController.signin())
         }
