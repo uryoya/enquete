@@ -4,16 +4,10 @@
 @import databaseModels.AnswerDbData
 @import databaseModels.CommentDbData
 @(enquete: EnqueteDbData, answer: AnswerDbData, comments: List[CommentDbData])(commentForm: Form[commentData])(implicit messages: Messages)
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-	<meta charset="UTF-8">
-	<title>enquete</title>
-</head>
-<body>
+@main(s"${enquete.title} | ${answer.author}") {
 	<a href="@routes.EnqueteController.index()">home</a> >
 	<a href="@routes.EnqueteController.enquete(enquete.id)">@enquete.title</a> >
-    <a href="@routes.EnqueteController.answer(enquete.id, answer.id)">@answer.author</a> >
+	<a href="@routes.EnqueteController.answer(enquete.id, answer.id)">@answer.author</a> >
 	<h1>@enquete.title</h1>
 	<h2>answer</h2>
 	<p>author: @answer.author</p>
@@ -29,5 +23,4 @@
 		@inputText(commentForm("comment"))
 		<input type="submit" value="COMMENT">
 	}
-</body>
-</html>
+}

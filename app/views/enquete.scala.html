@@ -3,13 +3,7 @@
 @import databaseModels.AnswerDbData
 @import formModels._
 @(enquete: EnqueteDbData, answers: List[AnswerDbData])(answerForm: Form[answerData])(implicit messages: Messages)
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-	<meta charset="UTF-8">
-	<title>enquete</title>
-</head>
-<body>
+@main(enquete.title) {
 	<a href="@routes.EnqueteController.index()">home</a> >
 	<a href="@routes.EnqueteController.enquete(enquete.id)">@enquete.title</a> >
 	<h1>@enquete.title</h1>
@@ -22,9 +16,8 @@
 	}
 	</ul>
 	<h2>Answer</h2>
-	@form(action = routes.EnqueteController.addAnswer(enquete.id)) {
-		@inputText(answerForm("answer"))
-		<input type="submit" value="ANSWER">
-	}
-</body>
-</html>
+    @form(action = routes.EnqueteController.addAnswer(enquete.id)) {
+        @inputText(answerForm("answer"))
+        <input type="submit" value="ANSWER">
+    }
+}
