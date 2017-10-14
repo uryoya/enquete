@@ -4,13 +4,13 @@
 @(enquetes: List[EnqueteDbData])(enqueteForm: Form[enqueteData])(implicit messages: Messages)
 @main("Enquete") {
     <a href="@routes.EnqueteController.index()">home</a> >
-    <h2>new enquete</h2>
+    <h1>new enquetes</h1>
     <ul>
     @for(enquete <- enquetes) {
         <li><a href="@routes.EnqueteController.enquete(enquete.id)">@enquete.title</a></li>
     }
     </ul>
-    <h3>create enqeute</h3>
+    <h2>create enqeute</h2>
     @form(action = routes.EnqueteController.addEnquete()) {
         @inputText(enqueteForm("title"))
         @inputText(enqueteForm("description"))
