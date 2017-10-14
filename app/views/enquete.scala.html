@@ -2,7 +2,7 @@
 @import databaseModels.EnqueteDbData
 @import databaseModels.AnswerDbData
 @import formModels._
-@(enquete: EnqueteDbData, answers: List[AnswerDbData])(answerForm: Form[answerData])(implicit messages: Messages)
+@(enqueteId: Int)(enquete: EnqueteDbData, answers: List[AnswerDbData])(answerForm: Form[answerData])(implicit messages: Messages)
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -10,6 +10,8 @@
 	<title>enquete</title>
 </head>
 <body>
+	<a href="@routes.EnqueteController.index()">home</a> >
+	<a href="@routes.EnqueteController.enquete(enqueteId)">@enquete.title</a> >
 	<h1>@enquete.title</h1>
 	<p>author: @enquete.author</p>
 	<p>@enquete.description</p>
