@@ -15,11 +15,15 @@
 	<p>@enquete.description</p>
 	<h2>Answers</h2>
 	<ul class="list-style-none simplelist-container">
-	@for(answer <- answers) {
-		<li class="simplelist-item">
-            <a href="@routes.EnqueteController.answer(enquete.id, answer.id)">@answer.author</a>
-        </li>
-	}
+    @if(answers.isEmpty) {
+       <li class="simplelist-item"><p>No one has posted it.</p></li>
+    } else {
+        @for(answer <- answers) {
+            <li class="simplelist-item">
+                <a href="@routes.EnqueteController.answer(enquete.id, answer.id)">@answer.author</a>
+            </li>
+        }
+    }
 	</ul>
 	<h2>Answer</h2>
     @form(action = routes.EnqueteController.addAnswer(enquete.id)) {
