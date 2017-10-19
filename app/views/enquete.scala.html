@@ -14,9 +14,11 @@
 	<p>author: @enquete.author</p>
 	<p>@enquete.description</p>
 	<h2>Answers</h2>
-	<ul>
+	<ul class="list-style-none simplelist-container">
 	@for(answer <- answers) {
-		<li><a href="@routes.EnqueteController.answer(enquete.id, answer.id)">@answer.answer</a></li>
+		<li class="simplelist-item">
+            <a href="@routes.EnqueteController.answer(enquete.id, answer.id)">@answer.author</a>
+        </li>
 	}
 	</ul>
 	<h2>Answer</h2>

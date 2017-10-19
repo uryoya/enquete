@@ -6,13 +6,18 @@
 @(enquetes: List[EnqueteDbData])(enqueteForm: Form[enqueteData])(implicit messages: Messages)
 @main("Enquete") {
     @breadcrumbs(BreadCrumbsLink("Home", routes.EnqueteController.index()))
-    <h1>new enquetes</h1>
-    <ul>
+    <h1>New Enquetes</h1>
+    <ul class="list-style-none simplelist-container">
     @for(enquete <- enquetes) {
-        <li><a href="@routes.EnqueteController.enquete(enquete.id)">@enquete.title</a></li>
+        <li class="simplelist-item">
+            <span class="simplelist-item-item">
+                <a href="@routes.EnqueteController.enquete(enquete.id)">@enquete.title</a>
+            </span>
+            <span class="simplelist-item-item">@enquete.author</span>
+        </li>
     }
     </ul>
-    <h2>create enqeute</h2>
+    <h2>Create Enqeute</h2>
     @form(action = routes.EnqueteController.addEnquete()) {
         @inputText(enqueteForm("title"))
         @inputText(enqueteForm("description"))
