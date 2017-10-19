@@ -4,8 +4,10 @@
 @import formModels._
 @(enquete: EnqueteDbData, answers: List[AnswerDbData])(answerForm: Form[answerData])(implicit messages: Messages)
 @main(enquete.title) {
-	<a href="@routes.EnqueteController.index()">home</a> >
-	<a href="@routes.EnqueteController.enquete(enquete.id)">@enquete.title</a> >
+    @breadcrumbs(
+		routes.EnqueteController.index(),
+		routes.EnqueteController.enquete(enquete.id)
+	)
 	<h1>@enquete.title</h1>
 	<p>author: @enquete.author</p>
 	<p>@enquete.description</p>

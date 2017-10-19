@@ -1,0 +1,10 @@
+@import helper._
+@import play.api.mvc._
+@(linkUrls: Call*) @* 関数名はpaginateじゃなくてパンくずリストに *@
+<div>
+    <ul class="list-style-none">
+    @for(linkUrl <- linkUrls) {
+        <li><a href="@linkUrl">something</a></li>
+    }
+    </ul>
+</div>
