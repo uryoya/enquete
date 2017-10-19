@@ -3,12 +3,14 @@
 @import databaseModels.EnqueteDbData
 @import databaseModels.AnswerDbData
 @import databaseModels.CommentDbData
+@import views.helper._
+
 @(enquete: EnqueteDbData, answer: AnswerDbData, comments: List[CommentDbData])(commentForm: Form[commentData])(implicit messages: Messages)
 @main(s"${enquete.title} | ${answer.author}") {
 	@breadcrumbs(
-		routes.EnqueteController.index(),
-		routes.EnqueteController.enquete(enquete.id),
-		routes.EnqueteController.answer(enquete.id, answer.id)
+		BreadCrumbsLink("Home", routes.EnqueteController.index()),
+		BreadCrumbsLink(enquete.title, routes.EnqueteController.enquete(enquete.id)),
+		BreadCrumbsLink(answer.author, routes.EnqueteController.answer(enquete.id, answer.id))
 	)
 	<h1>@enquete.title</h1>
 	<h2>answer</h2>

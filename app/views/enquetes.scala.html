@@ -1,9 +1,11 @@
 @import helper._
 @import formModels._
 @import databaseModels.EnqueteDbData
+@import views.helper._
+
 @(enquetes: List[EnqueteDbData])(enqueteForm: Form[enqueteData])(implicit messages: Messages)
 @main("Enquete") {
-    @breadcrumbs(routes.EnqueteController.index())
+    @breadcrumbs(BreadCrumbsLink("Home", routes.EnqueteController.index()))
     <h1>new enquetes</h1>
     <ul>
     @for(enquete <- enquetes) {

@@ -2,11 +2,13 @@
 @import databaseModels.EnqueteDbData
 @import databaseModels.AnswerDbData
 @import formModels._
+@import views.helper._
+
 @(enquete: EnqueteDbData, answers: List[AnswerDbData])(answerForm: Form[answerData])(implicit messages: Messages)
 @main(enquete.title) {
     @breadcrumbs(
-		routes.EnqueteController.index(),
-		routes.EnqueteController.enquete(enquete.id)
+		BreadCrumbsLink("Home", routes.EnqueteController.index()),
+		BreadCrumbsLink(enquete.title, routes.EnqueteController.enquete(enquete.id))
 	)
 	<h1>@enquete.title</h1>
 	<p>author: @enquete.author</p>
