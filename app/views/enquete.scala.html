@@ -2,27 +2,36 @@
 @import databaseModels.EnqueteDbData
 @import databaseModels.AnswerDbData
 @import formModels._
+@import views.helper._
+
 @(enquete: EnqueteDbData, answers: List[AnswerDbData])(answerForm: Form[answerData])(implicit messages: Messages)
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-	<meta charset="UTF-8">
-	<title>enquete</title>
-</head>
-<body>
+@main(enquete.title) {
+    @breadcrumbs(
+		BreadCrumbsLink("Home", routes.EnqueteController.index()),
+		BreadCrumbsLink(enquete.title, routes.EnqueteController.enquete(enquete.id))
+	)
 	<h1>@enquete.title</h1>
-	<p>author: @enquete.userId</p>
-	<p>@enquete.description</p>
+    <div class="comment-box">
+        <div class="author-view">@enquete.author</div>
+        <div class="comment-view">@Html(enquete.description.replaceAll("\r\n|\n|\r", "<br/>"))</div>
+    </div>
 	<h2>Answers</h2>
-	<ul>
-	@for(answer <- answers) {
-		<li><a href="@routes.EnqueteController.answer(enquete.id, answer.id)">@answer.answer</a></li>
-	}
+	<ul class="list-style-none simplelist-container">
+    @if(answers.isEmpty) {
+       <li class="simplelist-item"><p>No one has posted it.</p></li>
+    } else {
+        @for(answer <- answers) {
+            <li class="simplelist-item">
+                <a href="@routes.EnqueteController.answer(enquete.id, answer.id)">@answer.author</a>
+            </li>
+        }
+    }
 	</ul>
-	<h2>Answer</h2>
-	@form(action = routes.EnqueteController.addAnswer(enquete.id)) {
-		@inputText(answerForm("answer"))
-		<input type="submit" value="ANSWER">
-	}
-</body>
-</html>
+	<h2>Your Answer</h2>
+    <form action="@routes.EnqueteController.addAnswer(enquete.id)" method="post">
+        <div class="input-parent">
+            <label><textarea class="input-text" name="answer">Your answer</textarea></label>
+        </div>
+        <input class="submit-button" type="submit" value="Answer">
+    </form>
+}

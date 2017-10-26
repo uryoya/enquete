@@ -1,27 +1,34 @@
 @import helper._
 @import formModels._
 @import databaseModels.EnqueteDbData
+@import views.helper._
+
 @(enquetes: List[EnqueteDbData])(enqueteForm: Form[enqueteData])(implicit messages: Messages)
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-	<meta charset="UTF-8">
-	<title>enquete</title>
-</head>
-<body>
-	<h1>enquete</h1>
-	<h2>new enquete</h2>
-	<ul>
-	@for(enquete <- enquetes) {
-		<li><a href="@routes.EnqueteController.enquete(enquete.id)">@enquete.title</a></li>
-	}
-	</ul>
-	<h3>create enqeute</h3>
-	@form(action = routes.EnqueteController.addEnquete()) {
-		@inputText(enqueteForm("title"))
-		@inputText(enqueteForm("description"))
-		<input type="submit" value="SUBMIT">
-	}
-	<h2>history</h2>
-</body>
-</html>
+@main("Enquete") {
+    @breadcrumbs(BreadCrumbsLink("Home", routes.EnqueteController.index()))
+    <h1>New Enquetes</h1>
+    <ul class="list-style-none simplelist-container">
+    @if(enquetes.isEmpty) {
+        <li class="simplelist-item"><p>No one has posted it.</p></li>
+    } else {
+        @for(enquete <- enquetes) {
+            <li class="simplelist-item">
+                <span class="simplelist-item-item">
+                    <a href="@routes.EnqueteController.enquete(enquete.id)">@enquete.title</a>
+                </span>
+                <span class="simplelist-item-item">@enquete.author</span>
+            </li>
+        }
+    }
+    </ul>
+    <h2>Create Enqeute</h2>
+    <form action="@routes.EnqueteController.addEnquete()" method="post">
+        <div class="input-parent">
+            <input type="text" name="title" value="Title" class="input-text">
+        </div>
+        <div class="input-parent">
+            <textarea name="description" class="input-text">Description</textarea>
+        </div>
+        <input class="submit-button" type="submit" value="Create Enquete">
+    </form>
+}

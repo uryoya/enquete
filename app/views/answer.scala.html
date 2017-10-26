@@ -3,28 +3,34 @@
 @import databaseModels.EnqueteDbData
 @import databaseModels.AnswerDbData
 @import databaseModels.CommentDbData
+@import views.helper._
+
 @(enquete: EnqueteDbData, answer: AnswerDbData, comments: List[CommentDbData])(commentForm: Form[commentData])(implicit messages: Messages)
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-	<meta charset="UTF-8">
-	<title>enquete</title>
-</head>
-<body>
+@main(s"${enquete.title} | ${answer.author}") {
+	@breadcrumbs(
+		BreadCrumbsLink("Home", routes.EnqueteController.index()),
+		BreadCrumbsLink(enquete.title, routes.EnqueteController.enquete(enquete.id)),
+		BreadCrumbsLink(answer.author, routes.EnqueteController.answer(enquete.id, answer.id))
+	)
 	<h1>@enquete.title</h1>
-	<h2>answer</h2>
-	<p>author: @answer.userId</p>
-	<p>@answer.answer</p>
+	<div class="comment-box">
+		<div class="author-view">@answer.author</div>
+		<div class="comment-view">@Html(answer.answer.replaceAll("\r\n|\n|\r", "<br/>"))</div>
+	</div>
 	<h2>comments</h2>
-	<ul>
+	<ul class="list-style-none">
 	@for(comment <- comments) {
-		<li>@comment.userId : @comment.comment</li>
+		<div class="comment-box">
+			<div class="author-view">@comment.author</div>
+			<div class="comment-view">@Html(comment.comment.replaceAll("\r\n|\n|\r", "<br/>"))</div>
+		</div>
 	}
 	</ul>
 	<h2>comment</h2>
-	@form(action = routes.EnqueteController.addComment(enquete.id, answer.id)) {
-		@inputText(commentForm("comment"))
-		<input type="submit" value="COMMENT">
-	}
-</body>
-</html>
+	<form class="input-parent" action="@routes.EnqueteController.addComment(enquete.id, answer.id)" method="post">
+		<div class="input-parent">
+			<label><textarea class="input-text" name="comment">Your comment</textarea></label>
+		</div>
+		<input class="submit-button" type="submit" value="Comment">
+	</form>
+}
