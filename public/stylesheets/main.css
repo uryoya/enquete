@@ -122,3 +122,22 @@ footer {
 .item {
     padding: 0px 8px;
 }
+
+form {
+    border: 2px solid #cc8a67;
+    border-radius: 5px;
+}
+
+.input-parent {
+    margin: 5px;
+}
+
+.input-text {
+    margin: 0;
+    width: 100%;
+}
+
+.submit-button {
+    margin: 5px;
+}
+

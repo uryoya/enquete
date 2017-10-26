@@ -27,10 +27,10 @@
 	}
 	</ul>
 	<h2>comment</h2>
-	<form action="@routes.EnqueteController.addComment(enquete.id, answer.id)" method="post">
-		<div>
-			<label><textarea name="comment">Your comment</textarea></label>
+	<form class="input-parent" action="@routes.EnqueteController.addComment(enquete.id, answer.id)" method="post">
+		<div class="input-parent">
+			<label><textarea class="input-text" name="comment">Your comment</textarea></label>
 		</div>
-		<input type="submit" value="Comment">
+		<input class="submit-button" type="submit" value="Comment">
 	</form>
 }

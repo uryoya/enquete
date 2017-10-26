@@ -29,9 +29,9 @@
 	</ul>
 	<h2>Your Answer</h2>
     <form action="@routes.EnqueteController.addAnswer(enquete.id)" method="post">
-        <div>
-            <label><textarea name="answer">Your answer</textarea></label>
+        <div class="input-parent">
+            <label><textarea class="input-text" name="answer">Your answer</textarea></label>
         </div>
-        <input type="submit" value="Answer">
+        <input class="submit-button" type="submit" value="Answer">
     </form>
 }
