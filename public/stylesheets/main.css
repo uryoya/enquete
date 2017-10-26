@@ -82,6 +82,10 @@ footer {
     flex-direction: row;
 }
 
+.simplelist-container > .simplelist-item:last-child {
+    border: none;
+}
+
 .simplelist-container > .simplelist-item:hover {
     background-color: #d5d2bf;
 }
