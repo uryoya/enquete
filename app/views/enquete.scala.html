@@ -11,8 +11,10 @@
 		BreadCrumbsLink(enquete.title, routes.EnqueteController.enquete(enquete.id))
 	)
 	<h1>@enquete.title</h1>
-	<p>author: @enquete.author</p>
-	<p>@enquete.description</p>
+    <div class="comment-box">
+        <div class="author-view">@enquete.author</div>
+        <div class="comment-view">@enquete.description</div>
+    </div>
 	<h2>Answers</h2>
 	<ul class="list-style-none simplelist-container">
     @if(answers.isEmpty) {

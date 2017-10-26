@@ -13,13 +13,17 @@
 		BreadCrumbsLink(answer.author, routes.EnqueteController.answer(enquete.id, answer.id))
 	)
 	<h1>@enquete.title</h1>
-	<h2>answer</h2>
-	<p>author: @answer.author</p>
-	<p>@answer.answer</p>
+	<div class="comment-box">
+		<div class="author-view">@answer.author</div>
+		<div class="comment-view">@answer.answer</div>
+	</div>
 	<h2>comments</h2>
-	<ul>
+	<ul class="list-style-none">
 	@for(comment <- comments) {
-		<li>@comment.author : @comment.comment</li>
+		<div class="comment-box">
+			<div class="author-view">@comment.author</div>
+			<div class="comment-view">@comment.comment</div>
+		</div>
 	}
 	</ul>
 	<h2>comment</h2>

@@ -97,6 +97,23 @@ footer {
     width: 30px;
 }
 
+.comment-box {
+    padding: 0px;
+    margin: 15px 0;
+    border: 2px solid #cc8a67;
+    border-radius: 5px;
+}
+
+.comment-box > .author-view {
+    padding: 5px;
+    background-color: #d5d2bf;
+    border-bottom: 1px solid #cc8a67;
+}
+
+.comment-box > .comment-view {
+    padding: 5px;
+}
+
 .list-style-none {
     margin: 0px;
     list-style: none;
