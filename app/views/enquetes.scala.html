@@ -22,9 +22,13 @@
     }
     </ul>
     <h2>Create Enqeute</h2>
-    @form(action = routes.EnqueteController.addEnquete()) {
-        @inputText(enqueteForm("title"))
-        @inputText(enqueteForm("description"))
-        <input type="submit" value="SUBMIT">
-    }
+    <form action="@routes.EnqueteController.addEnquete()" method="post">
+        <div>
+            <label><input type="text" name="title" value="Title"></label>
+        </div>
+        <div>
+            <label><textarea name="description">Description</textarea></label>
+        </div>
+        <input type="submit" value="Create Enquete">
+    </form>
 }

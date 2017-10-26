@@ -13,7 +13,7 @@
 	<h1>@enquete.title</h1>
     <div class="comment-box">
         <div class="author-view">@enquete.author</div>
-        <div class="comment-view">@enquete.description</div>
+        <div class="comment-view">@Html(enquete.description.replaceAll("\r\n|\n|\r", "<br/>"))</div>
     </div>
 	<h2>Answers</h2>
 	<ul class="list-style-none simplelist-container">
@@ -27,9 +27,11 @@
         }
     }
 	</ul>
-	<h2>Answer</h2>
-    @form(action = routes.EnqueteController.addAnswer(enquete.id)) {
-        @inputText(answerForm("answer"))
-        <input type="submit" value="ANSWER">
-    }
+	<h2>Your Answer</h2>
+    <form action="@routes.EnqueteController.addAnswer(enquete.id)" method="post">
+        <div>
+            <label><textarea name="answer">Your answer</textarea></label>
+        </div>
+        <input type="submit" value="Answer">
+    </form>
 }
