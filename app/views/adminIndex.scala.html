@@ -1,0 +1,23 @@
+@import helper._
+@import databaseModels._
+
+@(pendingUsers: List[PendingUserDbData])
+@main("Enquete Admin Page") {
+    <h1>Enquete Admin Page</h1>
+    <h2>Pending Users</h2>
+    <ul class="list-style-none simplelist-container">
+        @for(user <- pendingUsers) {
+            <li class="simplelist-item">
+                <span class="simplelist-item-item">@user.name</span>
+                <span class="simplelist-item-item">
+                    <button type="button" onclick="authorize(@user.id)"></button>
+                </span>
+            </li>
+        }
+    </ul>
+    <script>
+        function authorize(id) {
+            alert(id)
+        }
+    </script>
+}
