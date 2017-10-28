@@ -16,6 +16,7 @@ class AuthorizeController @Inject()(db: Database)(ws: WSClient) extends Controll
     val clientId = "677bd149cb0df73ec46c"
     val clientSecret = "f940fe8e9f840f036a108859fe8691612f878d64"
     val userModel: UserModel = new UserModel(db)
+    val pendingUserModel: PendingUserModel = new PendingUserModel(db)
 
     def signin = Action { implicit request =>
         // GitHub OAuth認証の流れ
@@ -67,6 +68,11 @@ class AuthorizeController @Inject()(db: Database)(ws: WSClient) extends Controll
             result()
         }
         if (userModel.getUser(githubId) == null) {
+          if (pendingUserModel.getPendingUser(githubId) == null) {
+            pendingUserModel.addPendingUser(githubId, githubName, accessToken)
+          } else {
+            Redirect(routes.AuthorizeController.pending())
+          }
             userModel.addUser(githubId, githubName, githubIcon, accessToken)
         }
         // これで一応JSONをパースできるが、レスポンスがエラーの場合死ぬ
@@ -77,4 +83,8 @@ class AuthorizeController @Inject()(db: Database)(ws: WSClient) extends Controll
         // TODO: 未実装
         Ok(views.html.authorize())
     }
+
+  def pending = Action {
+    OK("You are pending now. Please wait.")
+  }
 }
