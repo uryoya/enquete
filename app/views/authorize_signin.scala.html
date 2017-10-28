@@ -1,13 +1,12 @@
 @(authorizeUrl: String)
-
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-	<meta charset="UTF-8">
-	<title>Signin with GitHub</title>
-</head>
-<body>
-	<h1>Authorize</h1>
-	<p>Signin/up with GitHub account. <a href="@authorizeUrl">Click here!</a></p>
-</body>
-</html>
+@main("Enquete| signin") {
+    <style type="text/css">
+		.signinimg {
+			height: 256px;
+		}
+        .signindiv {
+			margin: 50px auto;
+		}
+	</style>
+	<div class="signindiv"><a href="@authorizeUrl"><img class="signinimg" src="/assets/images/signin_with_github.png"></a></div>
+}

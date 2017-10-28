@@ -18,7 +18,7 @@ POST    /enquete/:enquete_id/answer/:answer_id  controllers.EnqueteController.ad
 
 # Admin Page
 GET     /admin                                  controllers.AdminController.index
-GET     /admin/authorize/:id                    controllers.AdminController.authorizeUser(id: Int)
+POST    /admin/authorize/:id                    controllers.AdminController.authorizeUser(id: Int)
 
 # Static files
 GET     /assets/*file                           controllers.Assets.versioned(path="/public", file: Asset)

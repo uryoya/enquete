@@ -56,7 +56,10 @@ class AuthorizeController @Inject()(db: Database)(ws: WSClient) extends Controll
     }
     val githubName = (userJson \ "name").asOpt[String] match {
       case Some(name) => name
-      case None => ""
+      case None => (userJson \ "login").asOpt[String] match {
+          case Some(login) => login
+          case None => "anonymous"
+        }
     }
     val githubIconUrl = (userJson \ "avatar_url").asOpt[String] match {
       case Some(avatarUrl) => avatarUrl
@@ -93,6 +96,6 @@ class AuthorizeController @Inject()(db: Database)(ws: WSClient) extends Controll
   }
 
   def pending = Action {
-    Ok("You are pending now. Please wait.")
+    Ok(views.html.pending())
   }
 }

@@ -10,14 +10,19 @@
             <li class="simplelist-item">
                 <span class="simplelist-item-item">@user.name</span>
                 <span class="simplelist-item-item">
-                    <button type="button" onclick="authorize(@user.id)"></button>
+                    <button type="button" onclick="authorize(@user.id)">Authorize</button>
                 </span>
             </li>
         }
     </ul>
     <script>
         function authorize(id) {
-            alert(id)
+            const request = new XMLHttpRequest();
+            request.open('POST', '/admin/authorize/' + id);
+            request.onload = function(e) {
+                alert(request.responseText)
+            };
+            request.send(null);
         }
     </script>
 }

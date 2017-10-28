@@ -45,7 +45,8 @@ class PendingUserModel(db: Database) {
   def delete(id: Int): Unit = {
     db.withConnection { implicit connect =>
       SQL("DELETE FROM pending_user WHERE id = {id};")
-        .executeQuery()
+        .on("id" -> id)
+        .executeUpdate()
     }
   }
 

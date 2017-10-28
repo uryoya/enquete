@@ -27,12 +27,13 @@ class AdminController @Inject()(db: Database) extends Controller {
     request.session.get("login").map { userId =>
       val admin = userModel.getUser(userId.toInt)
       if (admin.admin == 1) {
+        pendingUserModel.authorize(id)
         Ok("Authorize the new user")
       } else {
-        Redirect(routes.EnqueteController.index())
+        Forbidden("require the admin permission.")
       }
     }.getOrElse {
-      Redirect(routes.AuthorizeController.signin())
+      Forbidden("require the admin permission.")
     }
   }
 }
