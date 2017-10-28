@@ -17,7 +17,7 @@ class AdminController @Inject()(db: Database) extends Controller {
   def index = Action { implicit request =>
     request.session.get("login").map { userId =>
       val admin = userModel.getUser(userId.toInt)
-      if (admin.id == 0) {
+      if (admin.admin == 1) {
         Ok("Admin's index page")
       } else {
         Redirect(routes.EnqueteController.index())
@@ -30,7 +30,7 @@ class AdminController @Inject()(db: Database) extends Controller {
   def authorizeUser(id: Int) = Action { implicit request =>
     request.session.get("login").map { userId =>
       val admin = userModel.getUser(userId.toInt)
-      if (admin.id == 0) {
+      if (admin.admin == 1) {
         Ok("Authorize the new user")
       } else {
         Redirect(routes.EnqueteController.index())

@@ -6,19 +6,19 @@ import play.api.db._
 import anorm._
 import anorm.SqlParser._
 
-case class UserDbData(id: Int, name: String, icon: Array[Byte], accessToken: String)
+case class UserDbData(id: Int, name: String, icon: Array[Byte], accessToken: String, admin: Int)
 
 @Singleton
 class UserModel(db: Database) {
     // user parser
-    val userDataParser = int("id") ~ str("name") ~ byteArray("icon") ~ str("access_token")
+    val userDataParser = int("id") ~ str("name") ~ byteArray("icon") ~ str("access_token") ~ int("admin")
     val userDataMapper = userDataParser.map {
-        case id~name~icon~access_token => UserDbData(id, name, icon, access_token)
+        case id~name~icon~access_token~admin => UserDbData(id, name, icon, access_token, admin)
     }
 
     def addUser(id: Int, name: String, icon: Array[Byte], accessToken: String): Option[Long] = {
         db.withConnection { implicit connect =>
-            SQL("INSERT INTO `user` (`id`, `name`, `icon`, `access_token`) VALUES ({id}, {name}, {icon}, {access_token});")
+            SQL("INSERT INTO `user` (`id`, `name`, `icon`, `access_token`, 0) VALUES ({id}, {name}, {icon}, {access_token});")
                 .on("id" -> id, "name" -> name, "icon" -> icon, "access_token" -> accessToken)
                 .executeInsert()
         }
