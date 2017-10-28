@@ -69,11 +69,17 @@ class AuthorizeController @Inject()(db: Database)(ws: WSClient) extends Controll
     }
 
     // 登録していないユーザはPendingに追加して、Adminユーザの認証を待つ
+    // TODO: なんかmatchを使って綺麗に出来そうだけどわからないので後ほど...
     if (userModel.getUser(githubId) == null) {
-      if (pendingUserModel.getPendingUser(githubId) == null) {
-        pendingUserModel.addPendingUser(githubId, githubName, accessToken)
+      if (userModel.isEmpty) {  // 最初に登録するユーザはAdminユーザとする
+        userModel.addUser(githubId, githubName, githubIcon, accessToken, admin=true)
+        Redirect(routes.EnqueteController.index()).withSession("login" -> githubId.toString)
+      } else {
+        if (pendingUserModel.getPendingUser(githubId) == null) {
+          pendingUserModel.addPendingUser(githubId, githubName, accessToken)
+        }
+        Redirect(routes.AuthorizeController.pending())
       }
-      Redirect(routes.AuthorizeController.pending())
     } else {
       // 認証済みのユーザはサインイン
       // これで一応JSONをパースできるが、レスポンスがエラーの場合死ぬ
