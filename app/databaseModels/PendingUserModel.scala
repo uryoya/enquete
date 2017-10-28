@@ -35,6 +35,13 @@ class PendingUserModel(db: Database) {
     }
   }
 
+  def getAll: List[PendingUserDbData] = {
+    db.withConnection { implicit connect =>
+      SQL("SELECT * FROM pending_user;")
+        .as(pendingUserDataMapper.*)
+    }
+  }
+
   def delete(id: Int): Unit = {
     db.withConnection { implicit connect =>
       SQL("DELETE FROM pending_user WHERE id = {id};")
