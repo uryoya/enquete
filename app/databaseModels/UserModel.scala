@@ -35,6 +35,12 @@ class UserModel(db: Database) {
     }
   }
 
+  def isEmpty: Boolean = {
+    db.withConnection { implicit connect =>
+      SQL("SELECT count(*) as c FROM user;").as(scalar[Long].single)
+    } == 0
+  }
+
   def updateName(id: Int, name: String): Unit = {
     db.withConnection { implicit connect =>
       SQL("UPDATE `user` SET `name` = {name} WHERE `id` = {id};")
