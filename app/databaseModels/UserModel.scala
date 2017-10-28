@@ -16,10 +16,11 @@ class UserModel(db: Database) {
     case id ~ name ~ icon ~ access_token ~ admin => UserDbData(id, name, icon, access_token, admin)
   }
 
-  def addUser(id: Int, name: String, icon: Array[Byte], accessToken: String): Option[Long] = {
+  def addUser(id: Int, name: String, icon: Array[Byte], accessToken: String, admin: Boolean): Option[Long] = {
+    val sqladmin = if (admin) 1 else 0
     db.withConnection { implicit connect =>
-      SQL("INSERT INTO `user` (`id`, `name`, `icon`, `access_token`, admin) VALUES ({id}, {name}, {icon}, {access_token}, 0);")
-        .on("id" -> id, "name" -> name, "icon" -> icon, "access_token" -> accessToken)
+      SQL("INSERT INTO `user` (`id`, `name`, `icon`, `access_token`, admin) VALUES ({id}, {name}, {icon}, {access_token}, {admin});")
+        .on("id" -> id, "name" -> name, "icon" -> icon, "access_token" -> accessToken, "admin" -> sqladmin)
         .executeInsert()
     }
   }
