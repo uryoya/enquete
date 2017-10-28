@@ -2,8 +2,15 @@ CREATE TABLE user (
     id          INTEGER PRIMARY KEY,
     name        TEXT NOT NULL,
     icon        BLOB,
-    access_token    TEXT NOT NULL
+    access_token    TEXT NOT NULL,
+    admin       INTEGER NOT NULL DEFAULT 0,
 );
+
+CREATE TABLE pending_user (
+    id          INTEGER PRIMARY KEY,
+    name        TEXT NOT NULL,
+    access_token    TEXT NOT NULL
+)
 
 CREATE TABLE enquete (
     id          INTEGER PRIMARY KEY,

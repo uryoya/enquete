@@ -2,16 +2,23 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-# Enquete
-GET     /                                       controllers.EnqueteController.index
+# Signin/Signout
 GET     /signin                                 controllers.AuthorizeController.signin
 GET     /callback                               controllers.AuthorizeController.callback
+GET     /pending                                controllers.AuthorizeController.pending
 GET     /signout                                controllers.AuthorizeController.signout
+
+# Enquete
+GET     /                                       controllers.EnqueteController.index
 POST    /enquete                                controllers.EnqueteController.addEnquete
 GET     /enquete/:id                            controllers.EnqueteController.enquete(id: Int)
 POST    /enquete/:enquete_id/answer             controllers.EnqueteController.addAnswer(enquete_id: Int)
 GET     /enquete/:enquete_id/answer/:id         controllers.EnqueteController.answer(enquete_id: Int, id: Int)
 POST    /enquete/:enquete_id/answer/:answer_id  controllers.EnqueteController.addComment(enquete_id: Int, answer_id: Int)
+
+# Admin Page
+GET     /admin                                  controllers.AdminController.index
+POST    /admin/authorize/:id                    controllers.AdminController.authorizeUser(id: Int)
 
 # Static files
 GET     /assets/*file                           controllers.Assets.versioned(path="/public", file: Asset)
