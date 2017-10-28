@@ -85,6 +85,6 @@ class AuthorizeController @Inject()(db: Database)(ws: WSClient) extends Controll
   }
 
   def pending = Action {
-    OK("You are pending now. Please wait.")
+    Ok("You are pending now. Please wait.")
   }
 }
