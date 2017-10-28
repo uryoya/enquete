@@ -45,7 +45,7 @@ class PendingUserModel(db: Database) {
   def authorize(id: Int): Unit = {
     val users: UserModel = new UserModel(db)
     val pendingUser = getPendingUser(id)
-    users.addUser(pendingUser.id, pendingUser.name, new Array(new Byte()), pendingUser.accessToken)
+    users.addUser(pendingUser.id, pendingUser.name, new Array(0.toByte), pendingUser.accessToken)
     delete(id)
   }
 }
