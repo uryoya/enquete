@@ -13,12 +13,13 @@ import databaseModels._
 @Singleton
 class AdminController @Inject()(db: Database) extends Controller {
   val userModel: UserModel = new UserModel(db)
+  val pendingUserModel: PendingUserModel = new PendingUserModel(db)
 
   def index = Action { implicit request =>
     request.session.get("login").map { userId =>
       val admin = userModel.getUser(userId.toInt)
       if (admin.admin == 1) {
-        Ok("Admin's index page")
+        Ok(views.html.adminIndex(pendingUserModel.getAll))
       } else {
         Redirect(routes.EnqueteController.index())
       }
