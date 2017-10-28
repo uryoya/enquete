@@ -18,7 +18,7 @@ class UserModel(db: Database) {
 
     def addUser(id: Int, name: String, icon: Array[Byte], accessToken: String): Option[Long] = {
         db.withConnection { implicit connect =>
-            SQL("INSERT INTO `user` (`id`, `name`, `icon`, `access_token`, 0) VALUES ({id}, {name}, {icon}, {access_token});")
+            SQL("INSERT INTO `user` (`id`, `name`, `icon`, `access_token`, admin) VALUES ({id}, {name}, {icon}, {access_token}, 0);")
                 .on("id" -> id, "name" -> name, "icon" -> icon, "access_token" -> accessToken)
                 .executeInsert()
         }

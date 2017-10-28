@@ -18,7 +18,7 @@ class PendingUserModel(db: Database) {
 
   def addPendingUser(id: Int, name: String, accessToken: String): Option[Long] = {
     db.withConnection { implicit connect =>
-      SQL("INSERT INTO pending_user (`id`, name, icon) VALUES ({id}, {name}, {access_token});")
+      SQL("INSERT INTO pending_user (`id`, name, access_token) VALUES ({id}, {name}, {access_token});")
         .on("id" -> id, "name" -> name, "access_token" -> accessToken)
         .executeInsert()
     }

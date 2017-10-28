@@ -67,16 +67,18 @@ class AuthorizeController @Inject()(db: Database)(ws: WSClient) extends Controll
       val result = Http.default(conn OK as.Bytes)
       result()
     }
+
+    // 登録していないユーザはPendingに追加して、Adminユーザの認証を待つ
     if (userModel.getUser(githubId) == null) {
       if (pendingUserModel.getPendingUser(githubId) == null) {
         pendingUserModel.addPendingUser(githubId, githubName, accessToken)
-      } else {
-        Redirect(routes.AuthorizeController.pending())
       }
-      userModel.addUser(githubId, githubName, githubIcon, accessToken)
+      Redirect(routes.AuthorizeController.pending())
+    } else {
+      // 認証済みのユーザはサインイン
+      // これで一応JSONをパースできるが、レスポンスがエラーの場合死ぬ
+      Redirect(routes.EnqueteController.index()).withSession("login" -> githubId.toString)
     }
-    // これで一応JSONをパースできるが、レスポンスがエラーの場合死ぬ
-    Redirect(routes.EnqueteController.index()).withSession("login" -> githubId.toString)
   }
 
   def signout = Action {
