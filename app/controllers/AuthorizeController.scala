@@ -2,6 +2,7 @@ package controllers
 
 import javax.inject._
 
+import play.api._
 import play.api.mvc._
 import play.api.db._
 import play.api.libs.ws.WSClient
@@ -12,9 +13,9 @@ import databaseModels._
 
 
 @Singleton
-class AuthorizeController @Inject()(db: Database)(ws: WSClient) extends Controller {
-  val clientId = "677bd149cb0df73ec46c"
-  val clientSecret = "f940fe8e9f840f036a108859fe8691612f878d64"
+class AuthorizeController @Inject()(db: Database)(ws: WSClient)(conf: Configuration) extends Controller {
+  val clientId = conf.underlying.getString("github.client_id")
+  val clientSecret = conf.underlying.getString("github.client_secret")
   val userModel: UserModel = new UserModel(db)
   val pendingUserModel: PendingUserModel = new PendingUserModel(db)
 
