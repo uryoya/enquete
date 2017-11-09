@@ -16,5 +16,7 @@ db {
   # Default database configuration using SQLite database engine
 }
 
-client_id=""
-client_secret=""
+github {
+  client_id=""
+  client_secret=""
+}
