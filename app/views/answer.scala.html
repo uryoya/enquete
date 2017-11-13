@@ -15,14 +15,14 @@
 	<h1>@enquete.title</h1>
 	<div class="comment-box">
 		<div class="author-view">@answer.author</div>
-		<div class="comment-view">@Html(answer.answer.replaceAll("\r\n|\n|\r", "<br/>"))</div>
+		<div class="comment-view"><pre>@answer.answer</pre></div>
 	</div>
 	<h2>comments</h2>
 	<ul class="list-style-none">
 	@for(comment <- comments) {
 		<div class="comment-box">
 			<div class="author-view">@comment.author</div>
-			<div class="comment-view">@Html(comment.comment.replaceAll("\r\n|\n|\r", "<br/>"))</div>
+			<div class="comment-view"><pre>@comment.comment</pre></div>
 		</div>
 	}
 	</ul>
