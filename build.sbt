@@ -10,6 +10,7 @@ libraryDependencies ++= Seq(
   jdbc,
   cache,
   ws,
+  evolutions,
   "com.typesafe.play" %% "anorm" % "2.5.1",
   "org.scalatestplus.play" %% "scalatestplus-play" % "1.5.1" % Test,
   "net.databinder.dispatch" %% "dispatch-core" % "0.13.2"
