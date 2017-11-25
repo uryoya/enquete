@@ -13,7 +13,7 @@
 	<h1>@enquete.title</h1>
     <div class="comment-box">
         <div class="author-view">@enquete.author</div>
-        <div class="comment-view">@Html(enquete.description.replaceAll("\r\n|\n|\r", "<br/>"))</div>
+        <div class="comment-view"><pre>@enquete.description</pre></div>
     </div>
 	<h2>Answers</h2>
 	<ul class="list-style-none simplelist-container">
