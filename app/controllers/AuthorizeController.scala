@@ -93,7 +93,7 @@ class AuthorizeController @Inject()(db: Database)(ws: WSClient)(conf: Configurat
 
   def signout = Action {
     // TODO: 未実装
-    Ok(views.html.authorize())
+    Ok(views.html.authorize_signout()).withNewSession
   }
 
   def pending = Action {

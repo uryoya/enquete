@@ -8,7 +8,10 @@
 </head>
 <body>
     <header>
-        <div class="container"><a href="@routes.EnqueteController.index()" class="header-nav-link">Enquete</a></div>
+        <div class="header-container">
+            <div class="home-nav"><a href="@routes.EnqueteController.index()" class="header-nav-link">Enquete</a></div>
+            <div class="signout-nav"><a href="@routes.AuthorizeController.signout()" class="header-nav-link">Signout</a></div>
+        </div>
     </header>
     <div class="container">
         @content

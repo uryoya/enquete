@@ -31,6 +31,22 @@ footer {
     margin: 0px auto;
 }
 
+.header-container {
+    width: 980px;
+    margin: 0px auto;
+    display: flex;
+}
+
+.home-nav {
+    width: 50%;
+    text-align: left;
+}
+
+.signout-nav {
+    width: 50%;
+    text-align: right;
+}
+
 .header-nav-link {
     color: rgba(255,255,255,0.75);
     font-weight: bold;
