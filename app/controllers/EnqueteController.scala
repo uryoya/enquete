@@ -16,18 +16,18 @@ class EnqueteController @Inject()(db: Database) extends Controller {
     val userModel: UserModel = new UserModel(db)
     val enqueteForm = Form(
         mapping(
-            "title" -> text,
-            "description" -> text
+            "title" -> nonEmptyText,
+            "description" -> nonEmptyText
         )(enqueteData.apply)(enqueteData.unapply)
     )
     val answerForm = Form(
         mapping(
-            "answer" -> text
+            "answer" -> nonEmptyText
         )(answerData.apply)(answerData.unapply)
     )
     val commentForm = Form(
         mapping(
-            "comment" -> text
+            "comment" -> nonEmptyText
         )(commentData.apply)(commentData.unapply)
     )
 
@@ -42,12 +42,15 @@ class EnqueteController @Inject()(db: Database) extends Controller {
 
     def addEnquete = Action { implicit request =>
         request.session.get("login").map { userId =>
-            val enquete = enqueteForm.bindFromRequest.get
-            val result = enqueteModel.addEnquete(userId.toInt, enquete.title, enquete.description)
-            result match {
-                case Some(id) => Redirect(routes.EnqueteController.enquete(id.toInt))
-                case None => Redirect(routes.EnqueteController.index())
-            }
+            enqueteForm.bindFromRequest.fold(
+                _ => Redirect(routes.EnqueteController.index()), // エラーである旨を書きたい
+                enquete => {
+                    enqueteModel.addEnquete(userId.toInt, enquete.title, enquete.description) match {
+                        case Some(id) => Redirect(routes.EnqueteController.enquete(id.toInt))
+                        case None => Redirect(routes.EnqueteController.index())
+                    }
+                }
+            )
         }.getOrElse {
             Redirect(routes.AuthorizeController.signin())
         }
